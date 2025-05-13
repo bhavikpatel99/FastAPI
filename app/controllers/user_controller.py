@@ -13,17 +13,13 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-@router.get("/protected")
-def protected_route(current_user: user_Model = Depends(get_current_user)):
-    return {"message": f"Welcome, {current_user.username}!"}
-
 @router.post("/login", response_model=Token)
 def login(user: UserLogin, db: Session = Depends(get_db)):
     return user_service.authenticate_user(user, db)
 
-@router.post("/users", response_model=UserResponse)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    return user_service.create_user(user, db)
+@router.get("/protected")
+def protected_route(current_user: user_Model = Depends(get_current_user)):
+    return {"message": f"Welcome, {current_user.username}!"}
 
 @router.get("/users", response_model=List[UserResponse])
 def get_all_users(db: Session = Depends(get_db)):
@@ -33,6 +29,10 @@ def get_all_users(db: Session = Depends(get_db)):
     except Exception as e:
         logger.error(f"Error fetching users: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
+
+@router.post("/users", response_model=UserResponse)
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    return user_service.create_user(user, db)
 
 @router.get("/users/{user_id}", response_model=UserResponse)
 def get_user(user_id: int, db: Session = Depends(get_db)):
