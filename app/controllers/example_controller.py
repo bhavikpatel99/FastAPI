@@ -5,7 +5,7 @@ from app.models.item import Item  # Import the ORM model
 
 router = APIRouter()
 
-@router.get("/items")
+@router.get("/example")
 def read_items(db: Session = Depends(get_db)):
     items = db.query(Item).all()
     return items
