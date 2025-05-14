@@ -13,7 +13,7 @@ def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
     openapi_schema = get_openapi(
-        title="Your API",
+        title="Fast API",
         version="1.0.0",
         description="API with Bearer Token Authentication",
         routes=app.routes,
@@ -33,5 +33,5 @@ def custom_openapi():
 
 app.openapi = custom_openapi
 
-app.include_router(example_controller.router)
+# app.include_router(example_controller.router)
 app.include_router(user_controller.router)
